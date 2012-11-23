@@ -9,7 +9,6 @@ class Game < Chingu::Window
 		self.input = {esc: :exit}
 		@background_image = Background.create
 		@player = Player.create
-
 	end
 end
 
@@ -49,17 +48,25 @@ class Player < Chingu::GameObject
 	end
 
 	def up
-		self.velocity_y = Gosu::offset_y(@angle, 10)
-		self.velocity_x = Gosu::offset_x(@angle, 10)
+		self.velocity_y += Gosu::offset_y(@angle, 0.5)
+		self.velocity_x += Gosu::offset_x(@angle, 0.5)
 		unless @y <= 0
 			
 		end
 	end
 
 	def down
+		self.velocity_x -= Gosu::offset_x(@angle, 0.5)
+		self.velocity_y -= Gosu::offset_y(@angle, 0.5)
 		unless @y >= 600
-		@y += @speed
 		end	
+	end
+
+	def update
+		self.velocity_x *= 0.95
+		self.velocity_y *= 0.95
+		@x %= 800
+		@y %= 600
 	end
 
 end
