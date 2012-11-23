@@ -73,7 +73,8 @@ class Player < Chingu::GameObject
 			Cloud.create
 			@counter = 0
 		end
-		@counter += rand(0..1)
+
+		@counter += 1
 	end
 
 	def make 
@@ -85,6 +86,7 @@ end
 
 
 class Background < Chingu::GameObject
+	
 	def setup
 		@x = 800/2
 		@y = 600/2
@@ -95,7 +97,9 @@ end
 
 class Laser < Chingu::GameObject
 	has_traits :velocity, :timer
+	traits :collision_detection
 	def setup
+		self.collidable = true
 		@image = Gosu::Image["shoot.png"]
 		self.velocity_y = Gosu::offset_y(@angle, 20)
 		self.velocity_x = Gosu::offset_x(@angle, 20)
@@ -106,8 +110,10 @@ end
 
 class Cloud < Chingu::GameObject
 	has_traits :velocity
+	traits :collision_detection
 
 	def setup
+		self.collidable = true
 		@image = Gosu::Image["cloud.png"]
 		@y = -50
 		@angle = 180
@@ -117,9 +123,13 @@ class Cloud < Chingu::GameObject
 	end
 
 	def update
-		if @y > 650
-			self.destroy
+		if @y > 650 
+			die
 		end
+	end
+
+	def die
+		self.destroy
 	end
 
 end
