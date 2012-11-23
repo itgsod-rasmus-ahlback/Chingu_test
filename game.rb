@@ -14,6 +14,7 @@ class Game < Chingu::Window
 end
 
 class Player < Chingu::GameObject
+	has_traits :velocity
 
 	# meta/constructor
 	def setup
@@ -37,20 +38,21 @@ class Player < Chingu::GameObject
 
 	def left
 		unless @x - 20 <= 0
-		@x -= @speed
 		@angle -= 4.5
 		end
 	end
 
 	def right
 		unless @x + 20 >= 800
-		@x += @speed
+		@angle += 4.5
 		end
 	end
 
 	def up
+		self.velocity_y = Gosu::offset_y(@angle, 10)
+		self.velocity_x = Gosu::offset_x(@angle, 10)
 		unless @y <= 0
-			@y -= @speed
+			
 		end
 	end
 
@@ -58,10 +60,6 @@ class Player < Chingu::GameObject
 		unless @y >= 600
 		@y += @speed
 		end	
-	end
-
-	def move
-		@y = @y_vel
 	end
 
 end
@@ -76,11 +74,12 @@ class Background < Chingu::GameObject
 end
 
 class Laser < Chingu::GameObject
-	has_traits :velocity
+	has_traits :velocity, :timer
 	def setup
 		@image = Gosu::Image["shoot.png"]
 		self.velocity_y = Gosu::offset_y(@angle, 10)
 		self.velocity_x = Gosu::offset_x(@angle, 10)
+		after(1000) {self.destroy}
 	end
 end
 
