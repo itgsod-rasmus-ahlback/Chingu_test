@@ -2,9 +2,6 @@ require 'chingu'
 
 
 class Game < Chingu::Window
-
-
-
 	# Constructor
 	def initialize
 		super
@@ -16,7 +13,7 @@ class Game < Chingu::Window
 	end
 
 	def needs_cursor?
-    	false
+    	true
   	end
 
 end
@@ -34,11 +31,12 @@ class Player < Chingu::GameObject
 			holding_up: :up,
 			holding_down: :down,
 			holding_space: :fire,
+			holding_mouse_right: :make
 			}
-
 		@speed = 10
 		@angle = 0
 		@counter = 0
+		self.zorder = 2
 	end
 
 	def fire
@@ -69,15 +67,17 @@ class Player < Chingu::GameObject
 		@x %= 800
 		@y %= 600
 
-
 		$window.caption = ("Game Of Clouds: FPS #{$window.fps}")
 
 		if @counter == 90
 			Cloud.create
 			@counter = 0
 		end
-
 		@counter += rand(0..1)
+	end
+
+	def make 
+		Laser.create(x: $window.mouse_x, y: $window.mouse_y, angle: self.angle)
 	end
 
 
@@ -89,6 +89,7 @@ class Background < Chingu::GameObject
 		@x = 800/2
 		@y = 600/2
 		@image = Gosu::Image["ocean.png"]
+		self.zorder = 0
 	end
 end
 
@@ -99,6 +100,7 @@ class Laser < Chingu::GameObject
 		self.velocity_y = Gosu::offset_y(@angle, 20)
 		self.velocity_x = Gosu::offset_x(@angle, 20)
 		after(1000) {self.destroy}
+		self.zorder = 1
 	end
 end
 
@@ -111,6 +113,7 @@ class Cloud < Chingu::GameObject
 		@angle = 180
 		@x = rand(1..800)
 		self.velocity_y = Gosu::offset_y(@angle, 1)
+		self.zorder = 3
 	end
 
 	def update
