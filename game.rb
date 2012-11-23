@@ -6,8 +6,8 @@ class Game < Chingu::Window
 	# Constructor
 	def initialize
 		super
-		@caption = "lol"
 		self.input = {esc: :exit}
+
 		@player = Player.create
 	end
 end
@@ -18,7 +18,30 @@ class Player < Chingu::GameObject
 	def setup
 		@x, @y = 350, 400
 		@image = Gosu::Image["./final_ship.png"]
+		self.input = {
+			holding_left: :left,
+			holding_right: :right,
+			holding_up: :up,
+			holding_down: :down
+			}
 	end
+
+	def left
+		@x -= 
+	end
+
+	def right
+		@x += 1
+	end
+
+	def up
+		@y -= 1
+	end
+
+	def down
+		@y += 1
+	end
+
 end
 
 Game.new.show
