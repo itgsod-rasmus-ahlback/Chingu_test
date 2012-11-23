@@ -9,6 +9,7 @@ class Game < Chingu::Window
 		self.input = {esc: :exit}
 
 		@player = Player.create
+
 	end
 end
 
@@ -24,29 +25,31 @@ class Player < Chingu::GameObject
 			holding_up: :up,
 			holding_down: :down
 			}
+
+		@speed = 10
 	end
 
 	def left
 		unless @x - 20 <= 0
-		@x -= 10
+		@x -= @speed
 		end
 	end
 
 	def right
 		unless @x + 20 >= 800
-		@x += 10
+		@x += @speed
 		end
 	end
 
 	def up
 		unless @y <= 0
-			@y -= 10
+			@y -= @speed
 		end
 	end
 
 	def down
 		unless @y >= 600
-		@y += 10
+		@y += @speed
 		end	
 	end
 
